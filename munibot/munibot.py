@@ -1,7 +1,5 @@
-import os
 import sys
 import argparse
-import configparser
 
 from .config import load_config, load_profiles
 from .image import create_image
@@ -10,7 +8,7 @@ from .image import create_image
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("profile")
-    parser.add_argument("id")
+    parser.add_argument("--id", "-i")
     parser.add_argument("--config", "-c", default="munibot.ini")
 
     args = parser.parse_args()
@@ -25,4 +23,14 @@ def main():
         print(f"Unknown profile: {args.profile}")
         sys.exit(1)
 
-    create_image(args.profile, args.id)
+    if args.id:
+        id_ = args.id
+    else:
+        profile = profiles[args.profile]()
+        id_ = profile.get_next_id()
+
+    if id_ is None:
+        print("No more images to create!")
+        sys.exit()
+
+    create_image(args.profile, id_)

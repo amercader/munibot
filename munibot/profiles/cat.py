@@ -1,3 +1,6 @@
+import sqlite3
+
+from munibot.config import config
 from .es import MuniBotEs
 
 
@@ -24,3 +27,19 @@ class MuniBotCat(MuniBotEs):
         }
 
         return self.get_wms_image(**wms_options)
+
+    def get_next_id(self):
+
+        db = sqlite3.connect(config["profile:cat"]["db_path"])
+
+        id_ = db.execute(
+            """
+            SELECT natcode
+            FROM munis_esp
+            WHERE tweet IS NULL
+                AND codcomuni = '09'
+            ORDER BY RANDOM()
+            LIMIT 1"""
+        )
+
+        return id_.fetchone()[0]

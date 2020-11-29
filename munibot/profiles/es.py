@@ -1,11 +1,12 @@
 import io
+import sqlite3
 import xml.etree.ElementTree as ET
 
 from owslib.wfs import WebFeatureService
-from owslib.wms import WebMapService
 
 import fiona
 
+from munibot.config import config
 from .base import BaseProfile
 
 
@@ -39,8 +40,6 @@ class MuniBotEs(BaseProfile):
 
         wfs = WebFeatureService(admin_wfs, version="2.0.0")
 
-        typename = "au:AdministrativeUnit"
-
         response = wfs.getfeature(
             storedQueryID="urn:ogc:def:query:OGC-WFS::GetFeatureById",
             storedQueryParams={"ID": "AU_ADMINISTRATIVEUNIT_{}".format(id_)},
@@ -69,3 +68,18 @@ class MuniBotEs(BaseProfile):
             geometry = [f["geometry"] for f in src][0]
 
             return src.bounds, geometry
+
+    def get_next_id(self):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        id_ = db.execute(
+            """
+            SELECT natcode
+            FROM munis_esp
+            WHERE tweet IS NULL
+            ORDER BY RANDOM()
+            LIMIT 1"""
+        )
+
+        return id_.fetchone()[0]
