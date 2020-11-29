@@ -43,3 +43,20 @@ class MuniBotCat(MuniBotEs):
         )
 
         return id_.fetchone()[0]
+
+    def get_text(self, id_):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        data = db.execute(
+            """
+            SELECT nameunit, namecomar
+            FROM munis_esp
+            WHERE natcode = ?
+            """,
+            (id_,),
+        )
+
+        name_muni, name_comarca = data.fetchone()
+
+        return f"{name_muni} ({name_comarca})"
