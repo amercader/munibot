@@ -3,10 +3,17 @@ import argparse
 
 from .config import load_config, load_profiles
 from .image import create_image
+from .tweet import send_tweet
 
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "action",
+        choices=["tweet", "create"],
+        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally""",
+    )
+
     parser.add_argument(
         "profile",
         help="""Profile to use to generate the image / tweet. Must be one of the ones available""",
@@ -51,4 +58,10 @@ def main():
         print("No more images to create!")
         sys.exit()
 
-    create_image(args.profile, id_)
+    if args.command == "create":
+        create_image(args.profile, id_)
+    elif args.command == "tweet":
+        text = profile.get_text(id_)
+        img = create_image(args.profile, id_)
+
+        send_tweet(args.profile, text, img)
