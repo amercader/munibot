@@ -7,9 +7,27 @@ from .image import create_image
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("profile")
-    parser.add_argument("--id", "-i")
-    parser.add_argument("--config", "-c", default="munibot.ini")
+    parser.add_argument(
+        "profile",
+        help="""Profile to use to generate the image / tweet. Must be one of the ones available""",
+    )
+    parser.add_argument(
+        "--id",
+        "-i",
+        help="""
+        Identifier of the administrative unit to create an image of.
+        If not provided the relevant profile will provide one
+        (generally a random one)""",
+    )
+    parser.add_argument(
+        "--config",
+        "-c",
+        default="munibot.ini",
+        help="""
+    Path to the configuration ini file. Defaults to a "munibot.ini" in the same
+    folder the command is run on.
+    """,
+    )
 
     args = parser.parse_args()
     try:
