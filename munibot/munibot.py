@@ -9,7 +9,7 @@ from .tweet import send_tweet
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "action",
+        "command",
         choices=["tweet", "create"],
         help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally""",
     )
@@ -48,10 +48,11 @@ def main():
         print(f"Unknown profile: {args.profile}")
         sys.exit(1)
 
+    profile = profiles[args.profile]()
+
     if args.id:
         id_ = args.id
     else:
-        profile = profiles[args.profile]()
         id_ = profile.get_next_id()
 
     if id_ is None:
@@ -59,9 +60,9 @@ def main():
         sys.exit()
 
     if args.command == "create":
-        create_image(args.profile, id_)
+        create_image(profile, id_)
     elif args.command == "tweet":
         text = profile.get_text(id_)
-        img = create_image(args.profile, id_)
+        img = create_image(profile, id_)
 
-        send_tweet(args.profile, text, img)
+        send_tweet(profile, id_, text, img)

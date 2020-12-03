@@ -1,4 +1,5 @@
 import io
+import os
 import time
 
 import numpy
@@ -8,7 +9,7 @@ import rasterio.plot
 from PIL import Image
 
 
-from .config import config, load_profiles
+from .config import config
 
 
 MASK_OPACITY = 70
@@ -54,11 +55,8 @@ def process_image(base_image, mask_array):
     return out
 
 
-def create_image(profile_name, id_):
+def create_image(profile, id_, output=None):
     start = time.perf_counter()
-
-    profiles = load_profiles()
-    profile = profiles[profile_name]()
 
     extent, boundaries = profile.get_boundaries(id_)
     base_image = profile.get_base_image(extent)
@@ -68,8 +66,10 @@ def create_image(profile_name, id_):
 
     final_image = process_image(base_image, mask)
 
-    with open("{}.jpg".format(id_), "wb") as f:
-        f.write(final_image.getbuffer())
-
     end = time.perf_counter()
     print(f"Done. Created image {id_}.jpg in {end - start:0.4f} seconds")
+    if output:
+        with open(os.path.join(output, "{}.jpg".format(id_)), "wb") as f:
+            f.write(final_image.getbuffer())
+    else:
+        return final_image
