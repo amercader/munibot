@@ -100,3 +100,21 @@ class MuniBotEs(BaseProfile):
         name_muni, name_prov = data.fetchone()
 
         return f"{name_muni} ({name_prov})"
+
+    def after_tweet(self, id_, status_id):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        db.execute(
+            """
+            UPDATE munis_esp
+            SET tweet = ?
+            WHERE natcode = ?
+            """,
+            (
+                status_id,
+                id_,
+            ),
+        )
+
+        db.commit()

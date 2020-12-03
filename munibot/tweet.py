@@ -30,3 +30,5 @@ def send_tweet(profile, id_, text, image):
         media = api.media_upload(f.name, file=f)
 
     status = api.update_status(text, media_ids=[media.media_id])
+
+    profile.after_tweet(id_, status.id)
