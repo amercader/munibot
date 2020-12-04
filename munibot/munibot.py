@@ -64,5 +64,6 @@ def main():
     elif args.command == "tweet":
         text = profile.get_text(id_)
         img = create_image(profile, id_)
+        lon, lat = profile.get_lon_lat(id_)
 
-        send_tweet(profile, id_, text, img)
+        send_tweet(profile, id_, text, img, lon, lat)

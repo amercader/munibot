@@ -69,6 +69,25 @@ class MuniBotEs(BaseProfile):
 
             return src.bounds, geometry
 
+    def get_lon_lat(self, id_):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        data = db.execute(
+            """
+            SELECT lon, lat
+            FROM munis_esp
+            WHERE natcode = ?
+            """,
+            (id_,),
+        )
+
+        lon, lat = data.fetchone()
+        import ipdb; ipdb.set_trace()
+
+        return lon, lat
+
+
     def get_next_id(self):
 
         db = sqlite3.connect(config["profile:es"]["db_path"])

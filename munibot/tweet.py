@@ -21,7 +21,7 @@ def get_auth(profile):
     return auth
 
 
-def send_tweet(profile, id_, text, image):
+def send_tweet(profile, id_, text, image, lon=None, lat=None):
 
     api = tweepy.API(get_auth(profile))
 
@@ -29,6 +29,11 @@ def send_tweet(profile, id_, text, image):
         f.write(image.getbuffer())
         media = api.media_upload(f.name, file=f)
 
-    status = api.update_status(text, media_ids=[media.media_id])
+    status = api.update_status(
+        text,
+        media_ids=[media.media_id],
+        lon=lon,
+        lat=lat
+    )
 
     profile.after_tweet(id_, status.id)
