@@ -83,10 +83,8 @@ class MuniBotEs(BaseProfile):
         )
 
         lon, lat = data.fetchone()
-        import ipdb; ipdb.set_trace()
 
         return lon, lat
-
 
     def get_next_id(self):
 

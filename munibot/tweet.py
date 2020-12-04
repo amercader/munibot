@@ -5,6 +5,17 @@ import tweepy
 from .config import config
 
 
+def get_verify_auth():
+
+    auth = tweepy.OAuthHandler(
+        config["twitter"]["api_key"],
+        config["twitter"]["api_key_secret"],
+        "oob",
+    )
+
+    return auth
+
+
 def get_auth(profile):
 
     profile_config = config["profile:" + profile.id]
@@ -29,11 +40,6 @@ def send_tweet(profile, id_, text, image, lon=None, lat=None):
         f.write(image.getbuffer())
         media = api.media_upload(f.name, file=f)
 
-    status = api.update_status(
-        text,
-        media_ids=[media.media_id],
-        lon=lon,
-        lat=lat
-    )
+    status = api.update_status(text, media_ids=[media.media_id], lon=lon, lat=lat)
 
     profile.after_tweet(id_, status.id)

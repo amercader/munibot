@@ -1,17 +1,18 @@
 import sys
 import argparse
+from urllib.parse import urlparse, parse_qs
 
 from .config import load_config, load_profiles
 from .image import create_image
-from .tweet import send_tweet
+from .tweet import send_tweet, get_verify_auth
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "command",
-        choices=["tweet", "create"],
-        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally""",
+        choices=["tweet", "create", "tokens"],
+        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally. Use \"tokens\" to get the API access tokens for a bot""",
     )
 
     parser.add_argument(
@@ -67,3 +68,31 @@ def main():
         lon, lat = profile.get_lon_lat(id_)
 
         send_tweet(profile, id_, text, img, lon, lat)
+    elif args.command == "tokens":
+        auth = get_verify_auth()
+        verify_url = auth.get_authorization_url()
+
+        oauth_token = parse_qs(urlparse(verify_url).query)['oauth_token'][0]
+
+        msg = f"""
+Please visit the following URL logged in as the Twitter bot account for this profile, authorize the application and input the verification code shown.
+
+        {verify_url}
+
+Verification code: """.strip()
+
+        verification_code = input(msg)
+
+        auth.request_token = {
+            'oauth_token': oauth_token,
+            'oauth_token_secret': verification_code
+        }
+
+        access_token, access_token_secret = auth.get_access_token(verification_code)
+
+        print(f'''
+Done, access tokens for profile {args.profile}:
+
+twitter_access_token={access_token}
+twitter_access_token_secret={access_token_secret}
+''')
