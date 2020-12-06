@@ -18,22 +18,6 @@ class MuniBotEs(BaseProfile):
 
     image_nodata_value = 0
 
-    def get_base_image(self, extent):
-
-        bbox = (extent[1], extent[0], extent[3], extent[2])
-
-        bbox = self.extend_bbox(bbox)
-
-        wms_options = {
-            "url": "http://www.ign.es/wms-inspire/pnoa-ma",
-            "layer": "OI.OrthoimageCoverage",
-            "version": "1.3.0",
-            "crs": "EPSG:4258",
-            "bbox": bbox,
-        }
-
-        return self.get_wms_image(**wms_options)
-
     def get_boundaries(self, id_):
 
         admin_wfs = "https://contenido.ign.es/wfs-inspire/unidades-administrativas"
@@ -66,40 +50,26 @@ class MuniBotEs(BaseProfile):
         gml_f = io.BytesIO(gml.encode("utf8"))
         with fiona.open(gml_f, "r") as src:
             geometry = [f["geometry"] for f in src][0]
+            import ipdb
 
+            ipdb.set_trace()
             return src.bounds, geometry
 
-    def get_lon_lat(self, id_):
+    def get_base_image(self, extent):
 
-        db = sqlite3.connect(config["profile:es"]["db_path"])
+        bbox = (extent[1], extent[0], extent[3], extent[2])
 
-        data = db.execute(
-            """
-            SELECT lon, lat
-            FROM munis_esp
-            WHERE natcode = ?
-            """,
-            (id_,),
-        )
+        bbox = self.extend_bbox(bbox)
 
-        lon, lat = data.fetchone()
+        wms_options = {
+            "url": "http://www.ign.es/wms-inspire/pnoa-ma",
+            "layer": "OI.OrthoimageCoverage",
+            "version": "1.3.0",
+            "crs": "EPSG:4258",
+            "bbox": bbox,
+        }
 
-        return lon, lat
-
-    def get_next_id(self):
-
-        db = sqlite3.connect(config["profile:es"]["db_path"])
-
-        id_ = db.execute(
-            """
-            SELECT natcode
-            FROM munis_esp
-            WHERE tweet IS NULL
-            ORDER BY RANDOM()
-            LIMIT 1"""
-        )
-
-        return id_.fetchone()[0]
+        return self.get_wms_image(**wms_options)
 
     def get_text(self, id_):
 
@@ -117,6 +87,38 @@ class MuniBotEs(BaseProfile):
         name_muni, name_prov = data.fetchone()
 
         return f"{name_muni} ({name_prov})"
+
+    def get_next_id(self):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        id_ = db.execute(
+            """
+            SELECT natcode
+            FROM munis_esp
+            WHERE tweet IS NULL
+            ORDER BY RANDOM()
+            LIMIT 1"""
+        )
+
+        return id_.fetchone()[0]
+
+    def get_lon_lat(self, id_):
+
+        db = sqlite3.connect(config["profile:es"]["db_path"])
+
+        data = db.execute(
+            """
+            SELECT lon, lat
+            FROM munis_esp
+            WHERE natcode = ?
+            """,
+            (id_,),
+        )
+
+        lon, lat = data.fetchone()
+
+        return lon, lat
 
     def after_tweet(self, id_, status_id):
 

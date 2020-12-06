@@ -72,7 +72,7 @@ def main():
         auth = get_verify_auth()
         verify_url = auth.get_authorization_url()
 
-        oauth_token = parse_qs(urlparse(verify_url).query)['oauth_token'][0]
+        oauth_token = parse_qs(urlparse(verify_url).query)["oauth_token"][0]
 
         msg = f"""
 Please visit the following URL logged in as the Twitter bot account for this profile, authorize the application and input the verification code shown.
@@ -84,15 +84,17 @@ Verification code: """.strip()
         verification_code = input(msg)
 
         auth.request_token = {
-            'oauth_token': oauth_token,
-            'oauth_token_secret': verification_code
+            "oauth_token": oauth_token,
+            "oauth_token_secret": verification_code,
         }
 
         access_token, access_token_secret = auth.get_access_token(verification_code)
 
-        print(f'''
+        print(
+            f"""
 Done, access tokens for profile {args.profile}:
 
 twitter_access_token={access_token}
 twitter_access_token_secret={access_token_secret}
-''')
+"""
+        )
