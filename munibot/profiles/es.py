@@ -50,9 +50,6 @@ class MuniBotEs(BaseProfile):
         gml_f = io.BytesIO(gml.encode("utf8"))
         with fiona.open(gml_f, "r") as src:
             geometry = [f["geometry"] for f in src][0]
-            import ipdb
-
-            ipdb.set_trace()
             return src.bounds, geometry
 
     def get_base_image(self, extent):

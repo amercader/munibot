@@ -1,5 +1,4 @@
 import io
-import os
 import time
 
 import numpy
@@ -113,7 +112,7 @@ def create_image(profile, id_, output=None):
     end = time.perf_counter()
     print(f"Done. Created image {id_}.jpg in {end - start:0.4f} seconds")
     if output:
-        with open(os.path.join(output, "{}.jpg".format(id_)), "wb") as f:
+        with open(output, "wb") as f:
             f.write(final_image.getbuffer())
     else:
         return final_image

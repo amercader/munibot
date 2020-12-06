@@ -36,6 +36,14 @@ def main():
     folder the command is run on.
     """,
     )
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=None,
+        help="""
+    Output path for the generated image (Only used with "create"). Defaults to a <id>.jpg file in the current folder.
+    """,
+    )
 
     args = parser.parse_args()
     try:
@@ -61,7 +69,11 @@ def main():
         sys.exit()
 
     if args.command == "create":
-        create_image(profile, id_)
+        if args.output:
+            output = args.output
+        else:
+            output = f"{id_}.jpg"
+        create_image(profile, id_, output)
     elif args.command == "tweet":
         text = profile.get_text(id_)
         img = create_image(profile, id_)
