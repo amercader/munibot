@@ -45,7 +45,7 @@ def get_mask(base_image, boundaries, nodata_value=0):
         return out_image_array
 
 
-def process_image(base_image, mask_array):
+def process_image(base_image, mask_array, output_format="jpeg"):
     """
     Create the final image including the aerial imagery background with the
     outside of the featured boundaries masked.
@@ -54,6 +54,8 @@ def process_image(base_image, mask_array):
     :type base_image: File-like object
     :param mask_array: numpy-like array that can be transformed into an image
     :type mask_array: array
+    :param output_format: Output image format. Defaults to "jpeg".
+    :type output_format: string
 
     :returns: resulting image saved as JPG
     :rtype: file-like object
@@ -77,7 +79,7 @@ def process_image(base_image, mask_array):
 
     out = io.BytesIO()
 
-    back.save(out, format="jpeg")
+    back.save(out, format=output_format)
 
     return out
 

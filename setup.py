@@ -20,6 +20,10 @@ setuptools.setup(
         "owslib>=0.20.0,<0.21",
         "Pillow>=8,<9",
     ],
+    tests_require=[
+        "pytest",
+        "pytest-cov",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
