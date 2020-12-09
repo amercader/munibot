@@ -6,9 +6,6 @@ with open("README.md", "r") as f:
 with open("requirements.txt", "r") as f:
     install_requires = f.readlines()
 
-with open("dev-requirements.txt", "r") as f:
-    dev_requires = f.readlines()
-
 setuptools.setup(
     name="munibot",
     version="0.0.1",
@@ -20,9 +17,6 @@ setuptools.setup(
     url="https://github.com/amercader/munibot",
     packages=setuptools.find_packages(),
     install_requires=install_requires,
-    extras_require={
-        "dev": dev_requires,
-    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
