@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 
 from munibot.image import create_image
-from munibot.tweet import get_verify_auth, get_auth, send_tweet
+from munibot.tweet import get_auth, get_verify_auth, send_tweet
 
 
 @pytest.mark.usefixtures("load_config")

@@ -1,11 +1,11 @@
 import os
 import pathlib
 
-import pytest
 import fiona
+import pytest
 
-from munibot.profiles.base import BaseProfile
 from munibot.config import load_config as main_load_config
+from munibot.profiles.base import BaseProfile
 
 
 @pytest.fixture

@@ -1,10 +1,9 @@
+import fiona
 import pytest
 from numpy.testing import assert_array_equal
-
-import fiona
 from PIL import Image
 
-from munibot.image import get_mask, process_image, create_image
+from munibot.image import create_image, get_mask, process_image
 
 
 def test_get_mask(test_boundaries_path, test_image_path):

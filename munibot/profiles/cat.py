@@ -1,6 +1,7 @@
 import sqlite3
 
 from munibot.config import config
+
 from .es import MuniBotEs
 
 

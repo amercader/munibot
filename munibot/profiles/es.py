@@ -2,11 +2,11 @@ import io
 import sqlite3
 import xml.etree.ElementTree as ET
 
+import fiona
 from owslib.wfs import WebFeatureService
 
-import fiona
-
 from munibot.config import config
+
 from .base import BaseProfile
 
 

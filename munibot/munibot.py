@@ -1,10 +1,10 @@
-import sys
 import argparse
-from urllib.parse import urlparse, parse_qs
+import sys
+from urllib.parse import parse_qs, urlparse
 
 from .config import load_config, load_profiles
 from .image import create_image
-from .tweet import send_tweet, get_verify_auth
+from .tweet import get_verify_auth, send_tweet
 
 
 def main():

@@ -1,6 +1,6 @@
 import pytest
 
-from munibot.config import load_config, load_profiles, config
+from munibot.config import config, load_config, load_profiles
 
 
 @pytest.mark.usefixtures("load_config")

@@ -7,9 +7,7 @@ import rasterio.mask
 import rasterio.plot
 from PIL import Image
 
-
 from .config import config
-
 
 MASK_OPACITY = 70
 

@@ -1,5 +1,6 @@
-import os
 import configparser
+import os
+
 from pkg_resources import iter_entry_points
 
 config = {}
