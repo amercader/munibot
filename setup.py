@@ -1,7 +1,13 @@
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+with open("requirements.txt", "r") as f:
+    install_requires = f.readlines()
+
+with open("dev-requirements.txt", "r") as f:
+    tests_require = f.readlines()
 
 setuptools.setup(
     name="munibot",
@@ -13,17 +19,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/amercader/munibot",
     packages=setuptools.find_packages(),
-    install_requires=[
-        "fiona>=1.8,<1.19",
-        "rasterio>=1.1",
-        "shapely>=1.7,<1.8",
-        "owslib>=0.20.0,<0.21",
-        "Pillow>=8,<9",
-    ],
-    tests_require=[
-        "pytest",
-        "pytest-cov",
-    ],
+    install_requires=install_requires,
+    tests_require=tests_require,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
