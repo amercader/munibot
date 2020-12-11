@@ -1,4 +1,5 @@
 import sqlite3
+import urllib
 
 from munibot.config import config
 
@@ -60,4 +61,8 @@ class MuniBotCat(MuniBotEs):
 
         name_muni, name_comarca = data.fetchone()
 
-        return f"{name_muni} ({name_comarca})"
+        wiki_link = "https://ca.wikipedia.org/wiki/{}".format(
+            urllib.parse.quote(name_muni.replace(" ", "_"))
+        )
+
+        return f"{name_muni} ({name_comarca})\n\n\n{wiki_link}"

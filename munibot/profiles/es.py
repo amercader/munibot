@@ -1,4 +1,5 @@
 import io
+import urllib
 import sqlite3
 import xml.etree.ElementTree as ET
 
@@ -83,7 +84,11 @@ class MuniBotEs(BaseProfile):
 
         name_muni, name_prov = data.fetchone()
 
-        return f"{name_muni} ({name_prov})"
+        wiki_link = "https://es.wikipedia.org/wiki/{}".format(
+            urllib.parse.quote(name_muni.replace(" ", "_"))
+        )
+
+        return f"{name_muni} ({name_prov})\n\n\n{wiki_link}"
 
     def get_next_id(self):
 
