@@ -2,7 +2,7 @@ import tempfile
 
 import tweepy
 
-from .config import config
+from .config import config, get_logger
 
 
 def get_verify_auth():
@@ -68,6 +68,9 @@ def send_tweet(profile, id_, text, image, lon=None, lat=None):
     :param lon: Latitude (optional)
     :type lon: float
     """
+
+    log = get_logger(__name__)
+
     api = tweepy.API(get_auth(profile))
 
     with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
@@ -77,3 +80,7 @@ def send_tweet(profile, id_, text, image, lon=None, lat=None):
     status = api.update_status(text, media_ids=[media.media_id], lon=lon, lat=lat)
 
     profile.after_tweet(id_, status.id)
+
+    log.info(
+        f"Tweet sent for feature {id_} on profile {profile.id}, status id: {status.id}"
+    )

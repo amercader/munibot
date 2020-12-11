@@ -7,7 +7,7 @@ import rasterio.mask
 import rasterio.plot
 from PIL import Image
 
-from .config import config
+from .config import config, get_logger
 
 MASK_OPACITY = 70
 
@@ -99,18 +99,25 @@ def create_image(profile, id_, output=None):
         if ``output`` is provided)
     :rtype: file-like object
     """
+
+    log = get_logger(__name__)
     start = time.perf_counter()
 
     extent, boundaries = profile.get_boundaries(id_)
+    log.debug("Received boundaries from profile ({})".format(extent))
+
     base_image = profile.get_base_image(extent)
+    log.debug("Received base image from profile")
 
     nodata_value = getattr(profile, "image_nodata_value", 0)
     mask = get_mask(base_image, boundaries, nodata_value)
+    log.debug("Image mask created")
 
     final_image = process_image(base_image, mask)
 
     end = time.perf_counter()
-    print(f"Done. Created image {id_}.jpg in {end - start:0.4f} seconds")
+    log.info(f"Created image {id_}.jpg in {end - start:0.4f} seconds")
+
     if output:
         with open(output, "wb") as f:
             f.write(final_image.getbuffer())
