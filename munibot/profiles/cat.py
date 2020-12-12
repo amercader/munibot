@@ -38,7 +38,7 @@ class MuniBotCat(MuniBotEs):
             """
             SELECT natcode
             FROM munis_esp
-            WHERE tweet IS NULL
+            WHERE tweet_cat IS NULL
                 AND codcomuni = '09'
             ORDER BY RANDOM()
             LIMIT 1"""
@@ -48,7 +48,7 @@ class MuniBotCat(MuniBotEs):
 
     def get_text(self, id_):
 
-        db = sqlite3.connect(config["profile:es"]["db_path"])
+        db = sqlite3.connect(config["profile:cat"]["db_path"])
 
         data = db.execute(
             """
@@ -66,3 +66,21 @@ class MuniBotCat(MuniBotEs):
         )
 
         return f"{name_muni} ({name_comarca})\n\n\n{wiki_link}"
+
+    def after_tweet(self, id_, status_id):
+
+        db = sqlite3.connect(config["profile:cat"]["db_path"])
+
+        db.execute(
+            """
+            UPDATE munis_esp
+            SET tweet_cat = ?
+            WHERE natcode = ?
+            """,
+            (
+                status_id,
+                id_,
+            ),
+        )
+
+        db.commit()

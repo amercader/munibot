@@ -98,7 +98,7 @@ class MuniBotEs(BaseProfile):
             """
             SELECT natcode
             FROM munis_esp
-            WHERE tweet IS NULL
+            WHERE tweet_es IS NULL
             ORDER BY RANDOM()
             LIMIT 1"""
         )
@@ -129,7 +129,7 @@ class MuniBotEs(BaseProfile):
         db.execute(
             """
             UPDATE munis_esp
-            SET tweet = ?
+            SET tweet_es = ?
             WHERE natcode = ?
             """,
             (

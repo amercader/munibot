@@ -75,11 +75,11 @@ def main():
             output = args.output
         else:
             output = f"{id_}.jpg"
-        log.info(f'Starts: create image for feature {id_} on profile {args.profile}')
+        log.info(f"Starts: create image for feature {id_} on profile {args.profile}")
         create_image(profile, id_, output)
     elif args.command == "tweet":
 
-        log.info(f'Start: sending tweet for feature {id_} on profile {args.profile}')
+        log.info(f"Start: sending tweet for feature {id_} on profile {args.profile}")
         text = profile.get_text(id_)
         img = create_image(profile, id_)
         lon, lat = profile.get_lon_lat(id_)
