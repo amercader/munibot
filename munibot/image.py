@@ -121,5 +121,5 @@ def create_image(profile, id_, output=None):
     if output:
         with open(output, "wb") as f:
             f.write(final_image.getbuffer())
-    else:
-        return final_image
+
+    return final_image

@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 from urllib.parse import parse_qs, urlparse
 
@@ -37,11 +38,11 @@ def main():
     """,
     )
     parser.add_argument(
-        "--output",
+        "--output-dir",
         "-o",
         default=None,
         help="""
-    Output path for the generated image (Only used with "create"). Defaults to a <id>.jpg file in the current folder.
+    Output directory for the generated image (Only used with "create" and "tweet"). Defaults to the the current folder in "create" and None in "tweet" (don't save it) .
     """,
     )
 
@@ -71,17 +72,20 @@ def main():
     log = get_logger(__name__)
 
     if args.command == "create":
-        if args.output:
-            output = args.output
-        else:
-            output = f"{id_}.jpg"
-        log.info(f"Starts: create image for feature {id_} on profile {args.profile}")
+        output = f"{id_}.jpg"
+        if args.output_dir:
+            output = os.path.join(args.output_dir, output)
+        log.info(f"Start: create image for feature {id_} on profile {args.profile}")
         create_image(profile, id_, output)
     elif args.command == "tweet":
+        if args.output_dir:
+            output = os.path.join(args.output_dir, f"{id_}.jpg")
+        else:
+            output = None
 
         log.info(f"Start: sending tweet for feature {id_} on profile {args.profile}")
         text = profile.get_text(id_)
-        img = create_image(profile, id_)
+        img = create_image(profile, id_, output)
         lon, lat = profile.get_lon_lat(id_)
 
         send_tweet(profile, id_, text, img, lon, lat)
