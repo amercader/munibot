@@ -84,7 +84,7 @@ def test_create_passing_id():
 
 def test_create_passing_output():
 
-    command = ["munibot", "create", "es", "-o", "/tmp/test.jpg"]
+    command = ["munibot", "create", "es", "-o", "/tmp/"]
     with mock.patch.object(sys, "argv", command):
         with mock.patch("munibot.munibot.load_profiles", return_value=mock_profiles):
             with mock.patch("munibot.munibot.create_image") as m:
@@ -94,7 +94,7 @@ def test_create_passing_output():
 
     assert m.call_args[0][1] == "abc"
 
-    assert m.call_args[0][2] == "/tmp/test.jpg"
+    assert m.call_args[0][2] == "/tmp/abc.jpg"
 
 
 def test_tweet():
