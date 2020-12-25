@@ -24,6 +24,18 @@ Here's how a sample tweet looks like:
 
 </p>
 
+## Table of Contents
+
+* [Usage](#usage)
+   * [Installation](#installation)
+   * [Configuration](#configuration)
+   * [Running it](#running-it)
+   * [Deploying it](#deploying-it)
+* [Writing your own profile](#writing-your-own-profile)
+* [Twitter Authorization](#twitter-authorization)
+* [Development installation](#development-installation)
+* [License](#license)
+
 
 ## Usage
 
@@ -86,6 +98,30 @@ You don't need much to run munibot, just a system capable of running Python >= 3
     0 */8 * * * /home/user/munibot/bin/munibot --c /home/user/munibot/munibot.ini tweet cat >> /home/user/out/cat/munibot_cat.log 2>&1
 
 You can adjust the log level in the munibot ini configuration file.
+
+## Writing your own profile
+
+Munibot is designed to be easy to customize to different data sources in order to power different bot accounts. This is done via *profile* classes. Profiles implement a few mandatory and optional properties and methods that provide the different inputs necessary to generate the tweets. Munibot takes care of the common functionality like generating the final image and sending the tweet.
+
+To see the actual methods that your profile should implement check the `BaseProfile` class in [`munibot/profiles/base.py`](https://github.com/amercader/munibot/blob/main/munibot/profiles/base.py). Here's a quick overview of what you should provide:
+
+* The **geometry** of the boundary of a particular administrative unit (given an id). This can come from any place that can end up providing a GeoJSON-like Python dict: an actual GeoJSON file, PostGIS database or a [WFS](https://en.wikipedia.org/wiki/Web_Feature_Service) service.
+* The **base image** (aerial photography or satellite imagery) covering the extent of the administrative unit (given the extent). [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services work really well for this as they allow to retrieve images of arbitrary extent and size.
+* The **text** that should go along with the image in the tweet. Generally the name of the unit, plus some higher level unit for reference.
+* A method that defines the **id** of the next unit that should be tweeted.
+* Optionally, the **latitude and longitude** that should be added to the tweet.
+
+Once you've implemented your profile class you can register using the `munibot_profiles` entry point in your package `setup.py` file:
+
+```
+"munibot_profiles": [
+	"<profile_id>=<your_package>.profiles.:<YourProfileClass>",
+]
+```
+
+You can check the [examples](https://github.com/amercader/munibot/blob/f0ef1f229eddbb5ff1a79d255f77da8885d91aee/setup.py#L28) on this repo.
+
+
 
 ## Twitter Authorization
 
