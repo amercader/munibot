@@ -160,11 +160,12 @@ class BaseProfile:
         bbox,
         crs,
         version="1.3.0",
-        styles=["default"],
+        styles=None,
         format="image/tiff",
+        headers=None
     ):
 
-        wms = WebMapService(url, version=version)
+        wms = WebMapService(url, version=version, headers=headers)
 
         img = wms.getmap(
             layers=[layer],
