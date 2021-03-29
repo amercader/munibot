@@ -175,8 +175,8 @@ Step-by-step setup (you will need munibot up and running so if you haven't yet i
 8. Enter the tokens above in the relevant profile section in the `munibot.ini` file:
 
         [profile:<profile_name>]
-        twitter_key=xxx
-        twitter_secret=yyy
+        twitter_access_token=xxx
+        twitter_access_token_secret=yyy
 
 Done! From this moment on munibot should be able to tweet on behalf of the bot account. You can try it running `munibot tweet <profile_name>`
 
