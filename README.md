@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/amercader/munibot/workflows/Tests/badge.svg)](https://github.com/amercader/munibot/actions)
 
-Munibot is friendly Twitter bot that posts aerial or satellite imagery of administrative regions (tipically municipalities).
+Munibot is a friendly Twitter bot that posts aerial or satellite imagery of administrative regions (tipically municipalities).
 
 
 ![munis_cat_scaled](https://user-images.githubusercontent.com/200230/102014660-6328cf00-3d57-11eb-86ec-183e8512538b.jpg)
