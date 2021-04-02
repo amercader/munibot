@@ -12,12 +12,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "command",
-        choices=["tweet", "create", "tokens"],
-        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally. Use \"tokens\" to get the API access tokens for a bot""",
+        choices=["tweet", "create", "profiles", "tokens"],
+        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally. "profiles" lists all installed profiles. Use \"tokens\" to get the API access tokens for a bot""",
     )
-
     parser.add_argument(
         "profile",
+        nargs="?",
         help="""Profile to use to generate the image / tweet. Must be one of the ones available""",
     )
     parser.add_argument(
@@ -47,6 +47,11 @@ def main():
     )
 
     args = parser.parse_args()
+
+    if args.command != "profiles" and not args.profile:
+        print("munibot: error: the following arguments are required: profile")
+        sys.exit(1)
+
     try:
         load_config(args.config)
     except ValueError as e:
@@ -54,6 +59,19 @@ def main():
         sys.exit(1)
 
     profiles = load_profiles()
+
+    if args.command == "profiles":
+
+        if not profiles:
+            print("No profiles found :(")
+            sys.exit()
+        num = len(profiles.keys())
+        print(f"{num} profile found:" if num == 1 else f"{num} profiles found:")
+        for name, profile in profiles.items():
+            print(f"{name} - {profile.desc}")
+
+        sys.exit()
+
     if args.profile not in profiles:
         print(f"Unknown profile: {args.profile}")
         sys.exit(1)
@@ -89,6 +107,7 @@ def main():
         lon, lat = profile.get_lon_lat(id_)
 
         send_tweet(profile, id_, text, img, lon, lat)
+
     elif args.command == "tokens":
         auth = get_verify_auth()
         verify_url = auth.get_authorization_url()
