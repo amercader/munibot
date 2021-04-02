@@ -25,9 +25,5 @@ setuptools.setup(
     python_requires=">=3.6",
     entry_points={
         "console_scripts": ["munibot=munibot.munibot:main"],
-        "munibot_profiles": [
-            "es=munibot.profiles.es:MuniBotEs",
-            "cat=munibot.profiles.cat:MuniBotCat",
-        ],
     },
 )

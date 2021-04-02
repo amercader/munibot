@@ -65,11 +65,11 @@ or:
 
     wget https://raw.githubusercontent.com/amercader/munibot/main/munibot.sample.ini -O munibot.ini
 
-If you want to try the `es` and `cat` profiles included in the main library, you'll also need the backend SQLite database:
+By itself munibot is not able to do much. You need to install an existing profile, or [write your own](#writing-your-own-profile).
 
-    wget https://github.com/amercader/munibot/raw/main/data/munis_esp.sqlite
+To install a profile just install its Python package with pip:
 
-Adapt the `db_path` entries in the configuration to the path where you saved the database.
+    pip install munibot-es
 
 
 ### Running it
@@ -82,13 +82,13 @@ Munibot assumes that the configuration ini file is located in the same folder th
 
     munibot -c /path/to/munibot.ini
 
-If at least a profile is available and all the necessary authorization tokens are available in the ini file (TODO) just run the following to tweet a new image:
+If at least a profile is available and all the necessary authorization tokens are available in the ini file (see [Twitter authorization](#twitter-authorization)) just run the following to tweet a new image:
 
-    munibot tweet es
+    munibot tweet <profile-name>
 
 If you only want to create the image without tweeting it use the `create` command:
 
-    munibot create es
+    munibot create <profile-name>
 
 ### Deploying it
 
@@ -119,7 +119,10 @@ Once you've implemented your profile class you can register using the `munibot_p
 ]
 ```
 
-You can check the [examples](https://github.com/amercader/munibot/blob/f0ef1f229eddbb5ff1a79d255f77da8885d91aee/setup.py#L28) on this repo.
+You can check the following examples:
+
+* Municipalities of Spain and Catalonia: [munibot_es](https://github.com/amercader/munibot_es)
+* Communes of France: [communebot_fr](https://github.com/amercader/communebot_fr)
 
 
 
