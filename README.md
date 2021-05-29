@@ -15,6 +15,8 @@ It currently powers the following Twitter accounts:
 
 * [@munibot_cat](https://twitter.com/munibot_cat): All municipalities in Catalonia, shown in random order, with base aerial ortophotograhy from [ICGC](https://www.icgc.cat/ca/Administracio-i-empresa/Medi-natural/Imatges-aeries-i-de-satel-lit/Ortofoto-convencional).
 
+* [@communebot](https://twitter.com/communebot): All communes in France, shown in random order, with base aerial ortophotograhy from [IGN](https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html).
+
 
 Here's how a sample tweet looks like:
 
