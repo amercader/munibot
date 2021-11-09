@@ -70,7 +70,10 @@ def process_image(base_image, mask_array, output_format="jpeg"):
     for x in range(mask.size[0]):
         for y in range(mask.size[1]):
             r, g, b, a = pixels[x, y]
-            pixels[x, y] = (r, g, b, a if r == 255 else 0)
+            if r == g == b == 255:
+                pixels[x, y] = (r, g, b, a)
+            else:
+                pixels[x, y] = (r, g, b, 0)
 
     back = Image.open(base_image)
     back.paste(mask, (0, 0), mask)
