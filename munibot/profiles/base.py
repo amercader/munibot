@@ -162,7 +162,8 @@ class BaseProfile:
         version="1.3.0",
         styles=None,
         format="image/tiff",
-        headers=None
+        headers=None,
+        **kwargs
     ):
 
         wms = WebMapService(url, version=version, headers=headers)
@@ -174,6 +175,7 @@ class BaseProfile:
             bbox=bbox,
             size=self.get_image_size(bbox),
             format=format,
+            **kwargs
         )
 
         return img
