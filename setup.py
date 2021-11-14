@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as f:
 
 setuptools.setup(
     name="munibot",
-    version="0.0.4",
+    version="0.0.5",
     author="Adrià Mercader",
     author_email="amercadero@gmail.com",
     description="A Twitter bot that tweets aerial imagery pictures of municipalities",
