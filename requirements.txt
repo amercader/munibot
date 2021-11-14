@@ -1,6 +1,6 @@
 fiona>=1.8,<1.19
 rasterio>=1.1
 shapely>=1.7,<1.8
-owslib>=0.20.0,<0.25
+owslib>=0.20.0,<0.26
 Pillow>=8,<9
 tweepy>=3.9.0,<3.10
