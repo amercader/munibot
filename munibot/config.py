@@ -2,7 +2,7 @@ import configparser
 import os
 import logging
 
-from pkg_resources import iter_entry_points
+from importlib.metadata import entry_points
 
 config = {}
 
@@ -26,7 +26,7 @@ def load_profiles():
 
     profiles = {
         profile.name: profile.load()
-        for profile in iter_entry_points("munibot_profiles")
+        for profile in entry_points(group="munibot_profiles")
     }
 
     return profiles
