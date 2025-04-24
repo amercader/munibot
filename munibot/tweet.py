@@ -12,7 +12,7 @@ def get_verify_auth():
 
     This is generally used in the ``tokens`` command to request the bot account tokens.
     """
-    auth = tweepy.OAuthHandler(
+    auth = tweepy.OAuth1UserHandler(
         config["twitter"]["api_key"],
         config["twitter"]["api_key_secret"],
         "oob",
@@ -32,7 +32,7 @@ def get_auth(profile):
 
     profile_config = config["profile:" + profile.id]
 
-    auth = tweepy.OAuthHandler(
+    auth = tweepy.OAuth1UserHandler(
         config["twitter"]["api_key"],
         config["twitter"]["api_key_secret"],
     )

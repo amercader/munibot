@@ -3,4 +3,4 @@ rasterio>=1.1
 shapely>=2.0
 owslib>=0.33.0
 Pillow>=11
-tweepy>=3.9.0,<3.10
+tweepy>=4.15.0

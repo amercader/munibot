@@ -11,11 +11,11 @@ def test_get_verify_auth():
 
     auth = get_verify_auth()
 
-    assert auth.access_token is None
+    assert auth.access_token =="oob"
     assert auth.access_token_secret is None
 
-    assert auth.consumer_key == b"CHANGE_ME"
-    assert auth.consumer_secret == b"CHANGE_ME_SECRET"
+    assert auth.consumer_key == "CHANGE_ME"
+    assert auth.consumer_secret == "CHANGE_ME_SECRET"
 
 
 @pytest.mark.usefixtures("load_config")
@@ -26,8 +26,8 @@ def test_get_auth(test_profile):
     assert auth.access_token == "CHANGE_ME_PROFILE"
     assert auth.access_token_secret == "CHANGE_ME_PROFILE_SECRET"
 
-    assert auth.consumer_key == b"CHANGE_ME"
-    assert auth.consumer_secret == b"CHANGE_ME_SECRET"
+    assert auth.consumer_key == "CHANGE_ME"
+    assert auth.consumer_secret == "CHANGE_ME_SECRET"
 
 
 class MockTweepyAPI:
