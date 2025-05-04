@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "munibot"
+version = "0.0.4"
+description = "A Twitter bot that tweets aerial imagery pictures of municipalities"
+readme = "README.md"
+authors = [
+    {name = "Adrià Mercader", email = "amercadero@gmail.com"}
+]
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/amercader/munibot"
+
+[project.scripts]
+munibot = "munibot.munibot:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
