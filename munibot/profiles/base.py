@@ -1,3 +1,5 @@
+import io
+
 import shapely.geometry
 from owslib.wms import WebMapService
 
@@ -163,7 +165,7 @@ class BaseProfile:
         styles=None,
         format="image/tiff",
         headers=None,
-        **kwargs
+        **kwargs,
     ):
 
         wms = WebMapService(url, version=version, headers=headers)
@@ -175,7 +177,7 @@ class BaseProfile:
             bbox=bbox,
             size=self.get_image_size(bbox),
             format=format,
-            **kwargs
+            **kwargs,
         )
 
-        return img
+        return io.BytesIO(img.read())
