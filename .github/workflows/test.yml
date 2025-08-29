@@ -1,6 +1,9 @@
 name: Tests
 on: [push, pull_request]
 
+env:
+  PIP_CACHE_DIR: /root/.cache/pip
+
 jobs:
   run-tests:
     runs-on: ubuntu-24.04
