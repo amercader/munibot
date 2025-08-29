@@ -97,15 +97,15 @@ def test_create_passing_output():
     assert m.call_args[0][2] == "/tmp/abc.jpg"
 
 
-def test_tweet():
+def test_post():
 
-    command = ["munibot", "tweet", "cat"]
+    command = ["munibot", "post", "cat"]
     with mock.patch.object(sys, "argv", command):
         with mock.patch("munibot.munibot.load_profiles", return_value=mock_profiles):
             with mock.patch(
                 "munibot.munibot.create_image", return_value="created_image"
             ) as m:
-                with mock.patch("munibot.munibot.send_tweet") as m:
+                with mock.patch("munibot.munibot.send_status") as m:
                     main()
 
     assert isinstance(m.call_args[0][0], MockProfileCat)

@@ -64,8 +64,8 @@ def send_status(profile, id_, text, image, lon=None, lat=None):
     )
 
     # Call the after_status method if it exists, otherwise fall back
-    if hasattr(profile, "after_status"):
-        profile.after_status(id_, status["id"])
+    if hasattr(profile, "after_post"):
+        profile.after_post(id_, status["id"])
 
     log.info(
         f"Status sent for feature {id_} on profile {profile.id}, status id: {status['id']}"

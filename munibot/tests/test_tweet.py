@@ -3,19 +3,7 @@ from unittest import mock
 import pytest
 
 from munibot.image import create_image
-from munibot.tweet import get_auth, get_verify_auth, send_tweet
-
-
-@pytest.mark.usefixtures("load_config")
-def test_get_verify_auth():
-
-    auth = get_verify_auth()
-
-    assert auth.access_token =="oob"
-    assert auth.access_token_secret is None
-
-    assert auth.consumer_key == "CHANGE_ME"
-    assert auth.consumer_secret == "CHANGE_ME_SECRET"
+from munibot.mastodon import get_auth, send_status
 
 
 @pytest.mark.usefixtures("load_config")
@@ -23,25 +11,18 @@ def test_get_auth(test_profile):
 
     auth = get_auth(test_profile)
 
-    assert auth.access_token == "CHANGE_ME_PROFILE"
-    assert auth.access_token_secret == "CHANGE_ME_PROFILE_SECRET"
-
-    assert auth.consumer_key == "CHANGE_ME"
-    assert auth.consumer_secret == "CHANGE_ME_SECRET"
+    assert auth.access_token == "CHANGE_ME"
+    assert auth.api_base_url == "https://CHANGE_ME_URL"
 
 
-class MockTweepyAPI:
-    def media_upload(self, file_name, file):
-        class Media:
-            media_id = "media_xyz"
+class MockMastodonAPI:
+    def media_post(self, *args, **kwargs):
 
-        return Media()
+        return {"id": "media_xyz"}
 
-    def update_status(self, text, media_ids, lon, lat):
-        class Status:
-            id = "status_xyz"
+    def status_post(self, *args, **kwargs):
 
-        return Status()
+        return {"id": "status_xyz"}
 
 
 @pytest.mark.usefixtures("load_config")
@@ -52,9 +33,9 @@ def test_send_tweet(test_profile):
     image = create_image(test_profile, id_)
     lon, lat = test_profile.get_lon_lat(id_)
 
-    test_profile.after_tweet = mock.MagicMock()
+    test_profile.after_post = mock.MagicMock()
 
-    with mock.patch("munibot.tweet.tweepy") as m:
-        m.API = mock.MagicMock(return_value=MockTweepyAPI())
-        send_tweet(test_profile, id_, text, image, lon, lat)
-    test_profile.after_tweet.assert_called_once_with("1234", "status_xyz")
+    with mock.patch("munibot.mastodon.Mastodon") as m:
+        m.return_value=MockMastodonAPI()
+        send_status(test_profile, id_, text, image, lon, lat)
+    test_profile.after_post.assert_called_once_with("1234", "status_xyz")
