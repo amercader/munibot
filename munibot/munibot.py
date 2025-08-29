@@ -5,15 +5,15 @@ from urllib.parse import parse_qs, urlparse
 
 from .config import load_config, load_profiles, get_logger
 from .image import create_image
-from .tweet import get_verify_auth, send_tweet
+from .mastodon import send_status
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "command",
-        choices=["tweet", "create", "profiles", "tokens"],
-        help="""Action to perform. \"tweet\" sends out a tweet, \"create\" just generates the image locally. "profiles" lists all installed profiles. Use \"tokens\" to get the API access tokens for a bot""",
+        choices=["post", "create", "profiles"],
+        help="""Action to perform. \"post\" sends out a status, \"create\" just generates the image locally. "profiles" lists all installed profiles.""",
     )
     parser.add_argument(
         "profile",
@@ -95,46 +95,15 @@ def main():
             output = os.path.join(args.output_dir, output)
         log.info(f"Start: create image for feature {id_} on profile {args.profile}")
         create_image(profile, id_, output)
-    elif args.command == "tweet":
+    elif args.command == "post":
         if args.output_dir:
             output = os.path.join(args.output_dir, f"{id_}.jpg")
         else:
             output = None
 
-        log.info(f"Start: sending tweet for feature {id_} on profile {args.profile}")
+        log.info(f"Start: sending status for feature {id_} on profile {args.profile}")
         text = profile.get_text(id_)
         img = create_image(profile, id_, output)
         lon, lat = profile.get_lon_lat(id_)
 
-        send_tweet(profile, id_, text, img, lon, lat)
-
-    elif args.command == "tokens":
-        auth = get_verify_auth()
-        verify_url = auth.get_authorization_url()
-
-        oauth_token = parse_qs(urlparse(verify_url).query)["oauth_token"][0]
-
-        msg = f"""
-Please visit the following URL logged in as the Twitter bot account for this profile, authorize the application and input the verification code shown.
-
-        {verify_url}
-
-Verification code: """.strip()
-
-        verification_code = input(msg)
-
-        auth.request_token = {
-            "oauth_token": oauth_token,
-            "oauth_token_secret": verification_code,
-        }
-
-        access_token, access_token_secret = auth.get_access_token(verification_code)
-
-        print(
-            f"""
-Done, access tokens for profile {args.profile}:
-
-twitter_access_token={access_token}
-twitter_access_token_secret={access_token_secret}
-"""
-        )
+        send_status(profile, id_, text, img, lon, lat)

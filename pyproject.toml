@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "munibot"
-version = "0.0.4"
-description = "A Twitter bot that tweets aerial imagery pictures of municipalities"
+version = "0.0.5"
+description = "A bot that posts aerial imagery pictures of municipalities"
 readme = "README.md"
 authors = [
     {name = "Adrià Mercader", email = "amercadero@gmail.com"}
