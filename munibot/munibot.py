@@ -104,6 +104,6 @@ def main():
         log.info(f"Start: sending status for feature {id_} on profile {args.profile}")
         text = profile.get_text(id_)
         img = create_image(profile, id_, output)
-        lon, lat = profile.get_lon_lat(id_)
+        #lon, lat = profile.get_lon_lat(id_)
 
-        send_status(profile, id_, text, img, lon, lat)
+        send_status(profile, id_, text, img)
