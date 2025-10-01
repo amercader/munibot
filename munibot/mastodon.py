@@ -1,3 +1,4 @@
+import re
 import tempfile
 
 from mastodon import Mastodon
@@ -5,7 +6,7 @@ from mastodon import Mastodon
 from .config import config, get_logger
 
 
-def get_auth(profile):
+def get_client(profile):
     """
     Returns a Mastodon API instance using the access token for a
     particular profile.
@@ -28,7 +29,6 @@ def send_status(profile, id_, text, image, lon=None, lat=None):
     Publish a new status in the profile bot account.
 
     Uploads the provided image and posts a new status with the text provided.
-    If provided, it also includes longitude and latitude information as metadata.
 
     After sending the status it calls the ``after_status()`` method of the provided
     profile, passing the feature id and the new status status id.
@@ -41,23 +41,18 @@ def send_status(profile, id_, text, image, lon=None, lat=None):
     :type text: string
     :param image: the image to include with the status
     :type image: file-like object
-    :param lon: Longitude (optional)
-    :type lon: float
-    :param lon: Latitude (optional)
-    :type lon: float
     """
     log = get_logger(__name__)
 
-    mastodon = get_auth(profile)
+    mastodon = get_client(profile)
+
+    alt_text = re.sub(r'https?://\S+', '', text)
+    alt_text = alt_text.strip()
+    alt_text = f"An aerial image of {alt_text}"
 
     with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
         f.write(image.getbuffer())
-        media = mastodon.media_post(f.name, mime_type="image/jpeg", description=text)
-
-    # Add location metadata if provided
-    #metadata = {}
-    #if lon is not None and lat is not None:
-    #    metadata = {"location": {"latitude": lat, "longitude": lon}}
+        media = mastodon.media_post(f.name, mime_type="image/jpeg", description=alt_text)
 
     status = mastodon.status_post(
         text, media_ids=[media["id"]], sensitive=False, visibility="public"
