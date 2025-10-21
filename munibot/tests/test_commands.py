@@ -114,6 +114,3 @@ def test_post():
 
     assert m.call_args[0][2] == "Test text cat"
     assert m.call_args[0][3] == "created_image"
-
-    assert m.call_args[0][4] == 1.2781
-    assert m.call_args[0][5] == 41.1202

@@ -3,13 +3,13 @@ from unittest import mock
 import pytest
 
 from munibot.image import create_image
-from munibot.mastodon import get_auth, send_status
+from munibot.mastodon import get_client, send_status
 
 
 @pytest.mark.usefixtures("load_config")
-def test_get_auth(test_profile):
+def test_get_client(test_profile):
 
-    auth = get_auth(test_profile)
+    auth = get_client(test_profile)
 
     assert auth.access_token == "CHANGE_ME"
     assert auth.api_base_url == "https://CHANGE_ME_URL"
