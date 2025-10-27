@@ -6,17 +6,11 @@ from munibot.config import config, load_config, load_profiles
 @pytest.mark.usefixtures("load_config")
 def test_load_config():
 
-    assert config["twitter"]["api_key"] == "CHANGE_ME"
-    assert config["twitter"]["api_key_secret"] == "CHANGE_ME_SECRET"
-
     assert int(config["image"]["opacity"]) == 70
     assert int(config["image"]["max_pixel_side"]) == 1500
 
-    assert config["profile:test"]["twitter_access_token"] == "CHANGE_ME_PROFILE"
-    assert (
-        config["profile:test"]["twitter_access_token_secret"]
-        == "CHANGE_ME_PROFILE_SECRET"
-    )
+    assert config["profile:test"]["mastodon_access_token"] == "CHANGE_ME"
+    assert config["profile:test"]["mastodon_api_base_url"] == "CHANGE_ME_URL"
 
 
 def test_config_path_not_found():
