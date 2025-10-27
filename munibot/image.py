@@ -87,7 +87,7 @@ def process_image(base_image, mask_array, output_format="jpeg"):
 
 def create_image(profile, id_, output=None):
     """
-    Creates the image to tweet for the provided profile and id
+    Creates the image to post for the provided profile and id
 
     :param profile: an instance of the profile class
     :type profile: object

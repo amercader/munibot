@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/amercader/munibot/workflows/Tests/badge.svg)](https://github.com/amercader/munibot/actions)
 
-Munibot is a friendly Twitter bot that posts aerial or satellite imagery of administrative regions (tipically municipalities).
+Munibot is a friendly Mastodon bot that posts aerial or satellite imagery of administrative regions (tipically municipalities).
 
 
 ![munis_cat_scaled](https://user-images.githubusercontent.com/200230/102014660-6328cf00-3d57-11eb-86ec-183e8512538b.jpg)
@@ -18,11 +18,11 @@ It currently powers the following Twitter accounts:
 * [@communebot](https://twitter.com/communebot): All communes in France, shown in random order, with base aerial ortophotograhy from [IGN](https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html).
 
 
-Here's how a sample tweet looks like:
+Here's how a sample post looks like:
 
 <p align="center">
 
-![example_tweet](https://user-images.githubusercontent.com/200230/102015071-89e80500-3d59-11eb-8685-12967e9276d8.jpg)
+![example_post](https://github.com/user-attachments/assets/1798e999-e602-4665-80af-89546662e89c)
 
 </p>
 
@@ -84,34 +84,34 @@ Munibot assumes that the configuration ini file is located in the same folder th
 
     munibot -c /path/to/munibot.ini
 
-If at least a profile is available and all the necessary authorization tokens are available in the ini file (see [Twitter authorization](#twitter-authorization)) just run the following to tweet a new image:
+If at least a profile is available and all the necessary authorization tokens are available in the ini file (see [Twitter authorization](#twitter-authorization)) just run the following to post a new image:
 
-    munibot tweet <profile-name>
+    munibot post <profile-name>
 
-If you only want to create the image without tweeting it use the `create` command:
+If you only want to create the image without posting it use the `create` command:
 
     munibot create <profile-name>
 
 ### Deploying it
 
-You don't need much to run munibot, just a system capable of running Python >= 3.6. Once installed, you probably want to schedule the sending of tweets at regular intervals. An easy way available on Linux and macOS is `cron`. Here's an example configuration that you can adapt to your preferred interval and local paths (it assumes munibot was installed in a virtualenv in `/home/user/munibot`):
+You don't need much to run munibot, just a system capable of running Python >= 3.6. Once installed, you probably want to schedule the sending of posts at regular intervals. An easy way available on Linux and macOS is `cron`. Here's an example configuration that you can adapt to your preferred interval and local paths (it assumes munibot was installed in a virtualenv in `/home/user/munibot`):
 
-    # Tweet an image every 8 hours (~3 times a day)
-    0 */8 * * * /home/user/munibot/bin/munibot --c /home/user/munibot/munibot.ini tweet cat >> /home/user/out/cat/munibot_cat.log 2>&1
+    # Post an image every 8 hours (~3 times a day)
+    0 */8 * * * /home/user/munibot/bin/munibot --c /home/user/munibot/munibot.ini post cat >> /home/user/out/cat/munibot_cat.log 2>&1
 
 You can adjust the log level in the munibot ini configuration file.
 
 ## Writing your own profile
 
-Munibot is designed to be easy to customize to different data sources in order to power different bot accounts. This is done via *profile* classes. Profiles implement a few mandatory and optional properties and methods that provide the different inputs necessary to generate the tweets. Munibot takes care of the common functionality like generating the final image and sending the tweet.
+Munibot is designed to be easy to customize to different data sources in order to power different bot accounts. This is done via *profile* classes. Profiles implement a few mandatory and optional properties and methods that provide the different inputs necessary to generate the posts. Munibot takes care of the common functionality like generating the final image and sending the post.
 
 To see the actual methods that your profile should implement check the `BaseProfile` class in [`munibot/profiles/base.py`](https://github.com/amercader/munibot/blob/main/munibot/profiles/base.py). Here's a quick overview of what you should provide:
 
 * The **geometry** of the boundary of a particular administrative unit (given an id). This can come from any place that can end up providing a GeoJSON-like Python dict: an actual GeoJSON file, PostGIS database or a [WFS](https://en.wikipedia.org/wiki/Web_Feature_Service) service.
 * The **base image** (aerial photography or satellite imagery) covering the extent of the administrative unit (given the extent). [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services work really well for this as they allow to retrieve images of arbitrary extent and size.
-* The **text** that should go along with the image in the tweet. Generally the name of the unit, plus some higher level unit for reference.
-* A method that defines the **id** of the next unit that should be tweeted.
-* Optionally, the **latitude and longitude** that should be added to the tweet.
+* The **text** that should go along with the image in the post. Generally the name of the unit, plus some higher level unit for reference.
+* A method that defines the **id** of the next unit that should be posted.
+* Optionally, the **latitude and longitude** that should be added to the post.
 
 Once you've implemented your profile class you can register using the `munibot_profiles` entry point in your package `setup.py` file:
 
@@ -128,62 +128,9 @@ You can check the following examples:
 
 
 
-## Twitter Authorization
+## Mastodon setup
 
-[Authentication](https://developer.twitter.com/en/docs/authentication/overview) when using the Twitter API can be confusing at first, but it should be hopefully clear after following this guide.
-
-We need to use what Twitter calls [OAuth 1.0a](https://developer.twitter.com/en/docs/authentication/oauth-1-0a), more specifically [PIN-Based OAuth](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/pin-based-oauth). 
-
-Quick summary:
-* You will register for a Twitter *developer account*
-* With this account you will create an *app*, which will be used to interact with the Twitter API. 
-* The actual *bot accounts* will authorize this application with write permissions.
-* The munibot app will tweet on behalf of the bot accounts.
-
-Step-by-step setup (you will need munibot up and running so if you haven't yet installed [do so first](#installation)):
-
-1. Register for a developer account on https://developer.twitter.com (you can use your actual Twitter account or create a separate one)
-2. Create a new Project, and a new Application within it:
-    * Select *Read and Write* permissions
-    * Turn on the *Enable 3-legged OAuth* authentication setting
-    * Enter a callback URL (anything will do, we won't use it)
-3. Generate an *Access token and secret*, and enter them under the `[twitter]` section in the `munibot.ini` file:
-    ```
-    [twitter]
-    api_key=CHANGE_ME
-    api_key_secret=CHANGE_ME
-    ```
-4. Create a twitter account for your bot (eg `munibot_xyz`)
-5. Run the following command:
-
-       munibot tokens <profile_name>
-
-     You should see a message like:
-
-        Please visit the following URL logged in as the Twitter bot account for this profile, authorize the application and input the verification code shown.
-
-        https://api.twitter.com/oauth/authorize?oauth_token=XXX
-
-        Verification code:
-
-6. Do as suggested, open the link logged in as the *bot account* (not your own). You should see a page asking you to authorize the application that you created on step 2. Once authorized you should see a big verification code. Enter it in the munibot command prompt.
-
-    ![Verification code](https://user-images.githubusercontent.com/200230/103143034-e01c5700-470e-11eb-8d51-b9344ead3f7a.png)
-
-7. The command should output the following:
-
-        Done, access tokens for profile <profile_name>:
-
-        twitter_access_token=xxx
-        twitter_access_token_secret=yyy
-
-8. Enter the tokens above in the relevant profile section in the `munibot.ini` file:
-
-        [profile:<profile_name>]
-        twitter_access_token=xxx
-        twitter_access_token_secret=yyy
-
-Done! From this moment on munibot should be able to tweet on behalf of the bot account. You can try it running `munibot tweet <profile_name>`
+TODO
 
 ## Development installation
 

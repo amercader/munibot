@@ -60,7 +60,7 @@ class BaseProfile:
         raise NotImplementedError
 
     """
-    Returns the text that needs to be included in the tweet for this particular
+    Returns the text that needs to be included in the post for this particular
     feature.
     """
 
@@ -69,9 +69,9 @@ class BaseProfile:
         raise NotImplementedError
 
     """
-    Returns the id of the next feature that should be tweeted.
+    Returns the id of the next feature that should be posted.
 
-    This is used if the ``munibot tweet`` command is called withot providing
+    This is used if the ``munibot post`` command is called withot providing
     an id.
     """
 
@@ -83,9 +83,9 @@ class BaseProfile:
 
     """
     Return a tuple with the longitude and latitude that should be associated
-    with the tweet.
+    with the post.
 
-    The bot account should have location information on tweets activated.
+    The bot account should have location information on posts activated.
     """
 
     def get_lon_lat(self, id_):
@@ -93,11 +93,11 @@ class BaseProfile:
         return None, None
 
     """
-    Function that will be called after sending the tweet, that will receive
-    the feature and the status id of the tweet sent.
+    Function that will be called after sending the post, that will receive
+    the feature and the status id of the post sent.
     """
 
-    def after_tweet(self, id_, status_id):
+    def after_post(self, id_, status_id):
 
         pass
 

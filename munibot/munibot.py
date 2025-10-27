@@ -18,7 +18,7 @@ def main():
     parser.add_argument(
         "profile",
         nargs="?",
-        help="""Profile to use to generate the image / tweet. Must be one of the ones available""",
+        help="""Profile to use to generate the image / post. Must be one of the ones available""",
     )
     parser.add_argument(
         "--id",
@@ -42,7 +42,7 @@ def main():
         "-o",
         default=None,
         help="""
-    Output directory for the generated image (Only used with "create" and "tweet"). Defaults to the the current folder in "create" and None in "tweet" (don't save it) .
+    Output directory for the generated image (Only used with "create" and "post"). Defaults to the the current folder in "create" and None in "post" (don't save it) .
     """,
     )
 

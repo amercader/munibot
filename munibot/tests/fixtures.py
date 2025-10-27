@@ -61,7 +61,7 @@ class MuniBotTest(BaseProfile):
         return open(_test_image_path(), "rb")
 
     def get_text(self, id_):
-        return "Test feature (tweet text)"
+        return "Test feature (post text)"
 
     def get_next_id(self):
         return "1234"

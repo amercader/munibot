@@ -26,7 +26,7 @@ class MockMastodonAPI:
 
 
 @pytest.mark.usefixtures("load_config")
-def test_send_tweet(test_profile):
+def test_send_post(test_profile):
 
     id_ = test_profile.get_next_id()
     text = test_profile.get_text(id_)
