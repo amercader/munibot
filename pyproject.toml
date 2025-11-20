@@ -10,10 +10,12 @@ readme = "README.md"
 authors = [
     {name = "Adrià Mercader", email = "amercadero@gmail.com"}
 ]
-license = {text = "MIT License"}
+license = "MIT"
+license-files = [
+    "LICENSE.txt"
+]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 requires-python = ">=3.6"
