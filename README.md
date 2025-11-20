@@ -9,7 +9,7 @@ Munibot is a friendly Mastodon bot that posts aerial or satellite imagery of adm
 
 It is written in a modular way so it's easy to customize to different data sources, via the implementation of profiles.
 
-It currently powers the following Twitter accounts:
+It currently powers the following Mastodon accounts:
 
 * [@munibot_es](https://twitter.com/munibot_es): All municipalities in Spain, shown in random order, with base aerial ortophotograhy from [PNOA IGN](https://pnoa.ign.es/).
 
@@ -67,12 +67,6 @@ or:
 
     wget https://raw.githubusercontent.com/amercader/munibot/main/munibot.sample.ini -O munibot.ini
 
-By itself munibot is not able to do much. You need to install an existing profile, or [write your own](#writing-your-own-profile).
-
-To install a profile just install its Python package with pip:
-
-    pip install munibot-es
-
 
 ### Running it
 
@@ -84,7 +78,7 @@ Munibot assumes that the configuration ini file is located in the same folder th
 
     munibot -c /path/to/munibot.ini
 
-If at least a profile is available and all the necessary authorization tokens are available in the ini file (see [Twitter authorization](#twitter-authorization)) just run the following to post a new image:
+If at least a profile is available and all the necessary authorization tokens are available in the ini file (see [Mastodon setup](#mastodon-setup)) just run the following to post a new image:
 
     munibot post <profile-name>
 
@@ -121,11 +115,7 @@ Once you've implemented your profile class you can register using the `munibot_p
 ]
 ```
 
-You can check the following examples:
-
-* Municipalities of Spain and Catalonia: [munibot_es](https://github.com/amercader/munibot_es)
-* Communes of France: [communebot_fr](https://github.com/amercader/communebot_fr)
-
+You can check the examples included in this repository, in the `munibot/profiles` directory.
 
 
 ## Mastodon setup
