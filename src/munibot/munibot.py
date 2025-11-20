@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import sys
 from urllib.parse import parse_qs, urlparse
@@ -7,13 +8,20 @@ from .config import load_config, load_profiles, get_logger
 from .image import create_image
 from .mastodon import send_status
 
+DUMP_FILE_TEMPLATE = """
+window.MunibotPosts = {}
+"""
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "command",
-        choices=["post", "create", "profiles"],
-        help="""Action to perform. \"post\" sends out a status, \"create\" just generates the image locally. "profiles" lists all installed profiles.""",
+        choices=["post", "create", "profiles", "dump"],
+        help="""
+Action to perform. "post" sends out a post, "create" just generates the image locally.
+"profiles" lists all installed profiles and "dump" return a JS file that can be used in
+the map app.""",
     )
     parser.add_argument(
         "profile",
@@ -104,6 +112,17 @@ def main():
         log.info(f"Start: sending status for feature {id_} on profile {args.profile}")
         text = profile.get_text(id_)
         img = create_image(profile, id_, output)
-        #lon, lat = profile.get_lon_lat(id_)
 
         send_status(profile, id_, text, img)
+    elif args.command == "dump":
+
+        if not hasattr(profile, "posts_dump"):
+            print("Profile has no dump method")
+            sys.exit(1)
+
+        count, posts = profile.posts_dump()
+
+        out = {
+            "mastodon": {"posts": posts, "total": count, "posted": len(posts.keys())}
+        }
+        print(DUMP_FILE_TEMPLATE.format(json.dumps(out)))

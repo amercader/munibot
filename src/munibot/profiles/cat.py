@@ -82,3 +82,20 @@ class MuniBotCat(MuniBotEs):
         )
 
         db.commit()
+
+    def posts_dump(self):
+
+        db = sqlite3.connect(config["db"]["path"])
+
+        sql = """
+            SELECT cod_ine, mastodon_cat
+            FROM es
+            WHERE mastodon_cat IS NOT NULL
+            """
+        posts_query = db.execute(sql)
+
+        posts = {row[0]: row[1] for row in posts_query.fetchall()}
+
+        count = db.execute("SELECT COUNT(*) FROM es WHERE codcomuni = '09'").fetchone()[0]
+
+        return count, posts

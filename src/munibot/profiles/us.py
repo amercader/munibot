@@ -239,3 +239,20 @@ class CountyBotUS(BaseProfile):
         )
 
         db.commit()
+
+    def posts_dump(self):
+
+        db = sqlite3.connect(config["db"]["path"])
+
+        sql = """
+            SELECT GEOID, mastodon_us
+            FROM us
+            WHERE mastodon_us IS NOT NULL
+            """
+        posts_query = db.execute(sql)
+
+        posts = {row[0]: row[1] for row in posts_query.fetchall()}
+
+        count = db.execute("SELECT COUNT(*) FROM us").fetchone()[0]
+
+        return count, posts

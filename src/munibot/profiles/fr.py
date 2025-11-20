@@ -77,7 +77,7 @@ class CommuneBotFr(BaseProfile):
 
         crs = self._get_crs(bbox)
 
-        #wms_url = "https://wxs.ign.fr/essentiels/geoportail/r/wms"
+        # wms_url = "https://wxs.ign.fr/essentiels/geoportail/r/wms"
         wms_url = "https://data.geopf.fr/wms-r/wms"
 
         headers = {"User-Agent": "munibot-fr"}
@@ -94,7 +94,7 @@ class CommuneBotFr(BaseProfile):
 
         img = self.get_wms_image(**wms_options)
 
-        #if img.info().get("Content-Type") == "application/xml":
+        # if img.info().get("Content-Type") == "application/xml":
         #    raise ValueError("Error retrieving WMS image: {}".format(img.read()))
 
         return img
@@ -197,6 +197,23 @@ class CommuneBotFr(BaseProfile):
         )
 
         db.commit()
+
+    def posts_dump(self):
+
+        db = sqlite3.connect(config["db"]["path"])
+
+        sql = """
+            SELECT insee, mastodon_fr
+            FROM fr
+            WHERE mastodon_fr IS NOT NULL
+            """
+        posts_query = db.execute(sql)
+
+        posts = {row[0]: row[1] for row in posts_query.fetchall()}
+
+        count = db.execute("SELECT COUNT(*) FROM fr").fetchone()[0]
+
+        return count, posts
 
     # Internal methods
 
