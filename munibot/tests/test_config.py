@@ -1,5 +1,6 @@
 import pytest
 
+from munibot.profiles.base import BaseProfile
 from munibot.config import config, load_config, load_profiles
 
 
@@ -21,4 +22,12 @@ def test_config_path_not_found():
 
 def test_load_profiles():
 
-    assert sorted(load_profiles().keys()) == sorted(["es", "cat"])
+    profiles = load_profiles()
+
+    assert "es" in profiles
+    assert "cat" in profiles
+    assert "fr" in profiles
+    assert "us" in profiles
+
+    for name, profile_cls in profiles.items():
+        assert issubclass(profile_cls, BaseProfile)

@@ -1,6 +1,9 @@
 import configparser
 import os
 import logging
+import importlib
+import inspect
+from pathlib import Path
 
 from importlib.metadata import entry_points
 
@@ -23,11 +26,35 @@ otherwise pass the location with the "--config" parameter""".strip()
 
 
 def load_profiles():
+    from munibot.profiles.base import BaseProfile
 
-    profiles = {
+    profiles = {}
+
+    # Load profiles included in this package
+    profiles_dir = Path(__file__).parent / "profiles"
+
+    for profile_file in profiles_dir.glob("*.py"):
+        if profile_file.name in ("__init__.py", "base.py"):
+            continue
+
+        module_name = profile_file.stem
+
+        module = importlib.import_module(f"munibot.profiles.{module_name}")
+
+        # Find all classes in the module that inherit from BaseProfile
+        for name, obj in inspect.getmembers(module, inspect.isclass):
+            if issubclass(obj, BaseProfile) and obj is not BaseProfile:
+                profiles[module_name] = obj
+                break
+
+    external_profiles = {
         profile.name: profile.load()
         for profile in entry_points(group="munibot_profiles")
     }
+    if external_profiles:
+        for profile, class_ in external_profiles.items():
+            if profile not in profiles:
+                profiles[profile] = class_
 
     return profiles
 
