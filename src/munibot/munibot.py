@@ -4,7 +4,7 @@ import os
 import sys
 from urllib.parse import parse_qs, urlparse
 
-from .config import load_config, load_profiles, get_logger
+from .config import config, load_config, load_profiles, get_logger
 from .image import create_image
 from .mastodon import send_status
 
@@ -122,7 +122,14 @@ the map app.""",
 
         count, posts = profile.posts_dump()
 
+        profile_config = config[f"profile:{profile.id}"]
+
         out = {
-            "mastodon": {"posts": posts, "total": count, "posted": len(posts.keys())}
+            "mastodon": {
+                "host": profile_config["mastodon_api_base_url"],
+                "account": profile_config["mastodon_account_name"],
+                "posts": posts,
+                "total": count,
+                "posted": len(posts.keys())}
         }
         print(DUMP_FILE_TEMPLATE.format(json.dumps(out)))
