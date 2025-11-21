@@ -120,7 +120,13 @@ You can check the examples included in this repository, in the `munibot/profiles
 
 ## Mastodon setup
 
-TODO
+Each bot runs on its own dedicated account:
+
+1. Create an account in your server of choice. Set up `mastodon_account_name` and `mastodon_api_base_url` accordingly in the ini file. The latter
+   should be the mastodon server host (e.g. "mastodon.social").
+2. Go to Settings > Development and click "New application"
+3. Add the bot name, and select the `profile`, `write:statuses` and `write:media` scopes. Submit to create
+4. Click on the just created app, the "Your access token" value is the value you need to use for `mastodon_access_token` in the ini file.
 
 ## Development installation
 
