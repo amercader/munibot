@@ -54,6 +54,9 @@ def send_status(profile, id_, text, image, lon=None, lat=None):
         f.write(image.getbuffer())
         media = mastodon.media_post(f.name, mime_type="image/jpeg", description=alt_text)
 
+    # Add hashtag
+    text += "\n\n#munibot"
+
     status = mastodon.status_post(
         text, media_ids=[media["id"]], sensitive=False, visibility="public"
     )
