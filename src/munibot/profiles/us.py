@@ -137,7 +137,8 @@ class CountyBotUS(BaseProfile):
 
             tmp_f_in.write(img.read())
 
-            # Opens source dataset
+            # Open source dataset
+            gdal.UseExceptions()
             src_ds = gdal.Open(tmp_f_in.name)
             driver = gdal.GetDriverByName("GTiff")
 
