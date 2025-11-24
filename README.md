@@ -43,6 +43,11 @@ Here's how a sample post looks like:
 
 ### Installation
 
+You will need the followig system requirements (shown here are the Ubuntu 24.04 packages, adapt as needed):
+
+    sudo apt-get install libgdal-dev python3-dev g++
+
+
 Munibot is available on PyPI and can be installed with `pip`. It is strongly recommended to install it in a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
     python3 -m venv munibot
