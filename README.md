@@ -11,11 +11,14 @@ It is written in a modular way so it's easy to customize to different data sourc
 
 It currently powers the following Mastodon accounts:
 
-* [@munibot_es](https://twitter.com/munibot_es): All municipalities in Spain, shown in random order, with base aerial ortophotograhy from [PNOA IGN](https://pnoa.ign.es/).
+* [@munibot_es](https://mastodon.social/@munibot_es): All municipalities in Spain, shown in random order, with base aerial ortophotograhy from [PNOA IGN](https://pnoa.ign.es/).
 
-* [@munibot_cat](https://twitter.com/munibot_cat): All municipalities in Catalonia, shown in random order, with base aerial ortophotograhy from [ICGC](https://www.icgc.cat/ca/Administracio-i-empresa/Medi-natural/Imatges-aeries-i-de-satel-lit/Ortofoto-convencional).
+* [@munibot_cat](https://mastodon.social/@munibot_cat): All municipalities in Catalonia, shown in random order, with base aerial ortophotograhy from [ICGC](https://www.icgc.cat/ca/Administracio-i-empresa/Medi-natural/Imatges-aeries-i-de-satel-lit/Ortofoto-convencional).
 
-* [@communebot](https://twitter.com/communebot): All communes in France, shown in random order, with base aerial ortophotograhy from [IGN](https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html).
+* [@countybot_us](https://mastodon.social/@communebot): Alli US Counties and equivalents, shown in random order, with base aerial ortophotograhy from [USGS - The National Map](https://www.usgs.gov/programs/national-geospatial-program/national-map).
+
+
+* [@communebot](https://mastodon.social/@communebot): All communes in France, shown in random order, with base aerial ortophotograhy from [IGN](https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html).
 
 
 Here's how a sample post looks like:
@@ -34,7 +37,7 @@ Here's how a sample post looks like:
    * [Running it](#running-it)
    * [Deploying it](#deploying-it)
 * [Writing your own profile](#writing-your-own-profile)
-* [Twitter Authorization](#twitter-authorization)
+* [Mastodon setup](#mastodon-setup)
 * [Development installation](#development-installation)
 * [License](#license)
 
