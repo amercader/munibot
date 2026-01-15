@@ -1,5 +1,7 @@
 # Munibot
 
+Test
+
 [![Tests](https://github.com/amercader/munibot/workflows/Tests/badge.svg)](https://github.com/amercader/munibot/actions)
 
 Munibot is a friendly Mastodon bot that posts aerial or satellite imagery of administrative regions (tipically municipalities).
